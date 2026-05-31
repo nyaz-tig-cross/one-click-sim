@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>限定公開動画</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#121212;
+    color:white;
+    font-family:"Yu Gothic",sans-serif;
+    text-align:center;
+}
+
+header{
+    background:#cc0000;
+    padding:15px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.container{
+    padding:30px;
+}
+
+.badge{
+    display:inline-block;
+    background:red;
+    padding:6px 12px;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.video-box{
+    width:80%;
+    max-width:800px;
+    height:450px;
+    margin:30px auto;
+    background:linear-gradient(135deg,#222,#444);
+    position:relative;
+    cursor:pointer;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.video-title{
+    margin-top:15px;
+    font-size:28px;
+}
+
+.video-info{
+    color:#ccc;
+}
+
+.play-button{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    font-size:100px;
+    opacity:0.9;
+}
+
+button{
+    padding:15px 40px;
+    font-size:20px;
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+}
+
+.hidden{
+    display:none;
+}
+
+.loader{
+    width:80px;
+    height:80px;
+    border:10px solid #444;
+    border-top:10px solid white;
+    border-radius:50%;
+    margin:auto;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+.flash{
+    animation:flash 0.5s infinite;
+}
+
+@keyframes flash{
+    0%{background:#000;}
+    50%{background:#550000;}
+    100%{background:#000;}
+}
+
+.zoom{
+    animation:zoomIn 0.7s ease-out;
+}
+
+@keyframes zoomIn{
+    from{
+        transform:scale(0.2);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.warning{
+    background:#330000;
+    border:4px solid red;
+    width:80%;
+    max-width:800px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.money{
+    color:yellow;
+    font-size:50px;
+    font-weight:bold;
+}
+
+#countdown{
+    font-size:40px;
+    color:yellow;
+    font-weight:bold;
+}
+
+.lesson{
+    background:white;
+    color:black;
+    width:80%;
+    max-width:900px;
+    margin:30px auto;
+    padding:25px;
+    border-radius:10px;
+    text-align:left;
+}
+
+.lesson h1{
+    text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+動画配信サービス
+</header>
+
+<!-- トップ画面 -->
+
+<div id="home" class="container">
+
+    <div class="badge">
+        🔴 限定公開
+    </div>
+
+    <h1 class="video-title">
+        【期間限定】卒業記念ライブ映像
+    </h1>
+
+    <p class="video-info">
+        公開期限：本日23:59まで
+    </p>
+
+    <p class="video-info">
+        視聴者数：12,483人
+    </p>
+
+    <div class="video-box" onclick="confirmPlay()">
+
+        <div class="play-button">
+            ▶
+        </div>
+
+    </div>
+
+    <button onclick="confirmPlay()">
+        動画を再生する
+    </button>
+
+</div>
+
+<!-- バッファリング -->
+
+<div id="loading" class="hidden">
+
+    <h1>
+        動画を読み込んでいます...
+    </h1>
+
+    <div class="loader"></div>
+
+    <h3>
+        バッファリング中...
+    </h3>
+
+</div>
+
+<!-- 請求画面 -->
+
+<div id="scam" class="hidden">
+
+    <div class="warning">
+
+        <h1>
+            会員登録が完了しました
+        </h1>
+
+        <h2>
+            プレミアム視聴サービス
+        </h2>
+
+        <div class="money">
+            99,800円
+        </div>
+
+        <p>
+            お支払い期限：本日中
+        </p>
+
+        <hr>
+
+        <p id="ip"></p>
+
+        <p id="ua"></p>
+
+        <p id="datetime"></p>
+
+        <hr>
+
+        <h2>
+            法的手続き開始まで
+        </h2>
+
+        <div id="countdown">
+            00:30
+        </div>
+
+        <hr>
+
+        <h3>
+            退会窓口
+        </h3>
+
+        <p>
+            011-772-3051
+        </p>
+
+        <p>
+            営業時間 24時間
+        </p>
+
+    </div>
+
+</div>
+
+<!-- 解説画面 -->
+
+<div id="lesson" class="lesson hidden">
+
+<h1>
+これはワンクリック詐欺の疑似体験です
+</h1>
+
+<hr>
+
+<h2>
+なぜ騙されるのか？
+</h2>
+
+<ul>
+<li>突然の高額請求に驚く</li>
+<li>IPアドレス表示に不安になる</li>
+<li>時間制限に焦る</li>
+<li>法的手続きという言葉に恐怖を感じる</li>
+</ul>
+
+<h2>
+本当に取得できた情報
+</h2>
+
+<ul>
+<li>ブラウザ情報</li>
+<li>アクセス時刻</li>
+</ul>
+
+<h2>
+取得できていない情報
+</h2>
+
+<ul>
+<li>氏名</li>
+<li>住所</li>
+<li>電話番号</li>
+<li>学校名</li>
+<li>クラス</li>
+</ul>
+
+<h2>
+正しい対応
+</h2>
+
+<ul>
+<li>慌てて支払わない</li>
+<li>電話しない</li>
+<li>画面を閉じる</li>
+<li>保護者や先生へ相談する</li>
+<li>消費生活センターへ相談する</li>
+</ul>
+
+</div>
+
+<script>
+
+function confirmPlay(){
+
+    const result = confirm(
+        "この動画は限定公開コンテンツです。\n\n動画を再生しますか？"
+    );
+
+    if(result){
+        startVideo();
+    }
+}
+
+function startVideo(){
+
+    document.getElementById("home").classList.add("hidden");
+
+    document.getElementById("loading")
+        .classList.remove("hidden");
+
+    setTimeout(showScam,4000);
+}
+
+function showScam(){
+
+    document.getElementById("loading")
+        .classList.add("hidden");
+
+    const scam =
+        document.getElementById("scam");
+
+    scam.classList.remove("hidden");
+
+    scam.classList.add("zoom");
+
+    document.body.classList.add("flash");
+
+    let fakeIP =
+        Math.floor(Math.random()*255)+"."+
+        Math.floor(Math.random()*255)+"."+
+        Math.floor(Math.random()*255)+"."+
+        Math.floor(Math.random()*255);
+
+    document.getElementById("ip").innerHTML =
+        "IPアドレス取得済み : " + fakeIP;
+
+    document.getElementById("ua").innerHTML =
+        "端末情報取得済み : " + navigator.userAgent;
+
+    document.getElementById("datetime").innerHTML =
+        "登録日時 : " + new Date().toLocaleString();
+
+    startCountdown();
+}
+
+function startCountdown(){
+
+    let sec = 30;
+
+    const timer = setInterval(()=>{
+
+        sec--;
+
+        const m =
+            String(Math.floor(sec/60))
+            .padStart(2,"0");
+
+        const s =
+            String(sec%60)
+            .padStart(2,"0");
+
+        document.getElementById("countdown")
+            .innerHTML = m + ":" + s;
+
+        if(sec <= 0){
+
+            clearInterval(timer);
+
+            document.body.classList.remove("flash");
+
+            document.getElementById("lesson")
+                .classList.remove("hidden");
+
+        }
+
+    },1000);
+
+}
+
+</script>
+
+</body>
+</html>
